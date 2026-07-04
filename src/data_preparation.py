@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 
-def load_dataset(filename='dataset_part_1.csv'):
+def load_dataset(filename='spacex_web_scraped.csv'):
     """Step 1 & 2: Load the dataset and perform initial exploration."""
     filepath = os.path.join(DATA_DIR, filename)
     if not os.path.exists(filepath):
@@ -86,7 +86,7 @@ def handle_class_imbalance(X, y):
     print(f"Class distribution: {np.bincount(y)}")
     return X, y
 
-def prepare_pipeline(filename='dataset_part_1.csv'):
+def prepare_pipeline(filename='spacex_web_scraped.csv'):
     """Executes the full preprocessing pipeline."""
     df = load_dataset(filename)
     df = handle_missing_values(df)

@@ -30,13 +30,9 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 
 @st.cache_data
 def load_data():
-    path = os.path.join(DATA_DIR, 'dataset_part_2.csv')
+    path = os.path.join(DATA_DIR, 'spacex_web_scraped.csv')
     if os.path.exists(path):
         return pd.read_csv(path)
-    # Fallback to Part 1 if Part 2 not available
-    path_1 = os.path.join(DATA_DIR, 'dataset_part_1.csv')
-    if os.path.exists(path_1):
-        return pd.read_csv(path_1)
     return None
 
 df = load_data()
