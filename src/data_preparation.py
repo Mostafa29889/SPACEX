@@ -56,6 +56,14 @@ def handle_missing_values(df):
         df_clean['Flight No.'] = pd.to_numeric(df_clean['Flight No.'], errors='coerce')
         df_clean['Flight No.'] = df_clean['Flight No.'].fillna(0)
         
+    # Clean categorical columns to remove brackets or typos
+    for col in ['Version Booster', 'Orbit', 'Launch site']:
+        if col in df_clean.columns:
+            df_clean[col] = df_clean[col].astype(str).str.replace('[', '', regex=False) \
+                                                     .str.replace(']', '', regex=False) \
+                                                     .str.replace('<', '', regex=False) \
+                                                     .str.strip()
+        
     print("Missing values after imputation:")
     print(df_clean.isnull().sum()[df_clean.isnull().sum() > 0])
     return df_clean
@@ -110,6 +118,12 @@ def encode_categorical(df, columns_to_encode):
     # Convert booleans to 0/1 integers
     bool_cols = df_encoded.select_dtypes(include=['bool']).columns
     df_encoded[bool_cols] = df_encoded[bool_cols].astype(int)
+    
+    # Clean column names to make them compatible with XGBoost
+    df_encoded.columns = df_encoded.columns.str.replace('[', '', regex=False) \
+                                           .str.replace(']', '', regex=False) \
+                                           .str.replace('<', '', regex=False)
+                                           
     print(f"One-Hot encoded categorical columns: {columns_to_encode}")
     return df_encoded
 
