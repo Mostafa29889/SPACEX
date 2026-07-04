@@ -1,0 +1,13 @@
+# Local MLflow runs and databases
+mlruns/
+mlflow.db
+*.db
+
+# Python bytecode and caches
+__pycache__/
+*.pyc
+
+# Local IDE folders
+.vscode/
+.idea/
+.gemini/

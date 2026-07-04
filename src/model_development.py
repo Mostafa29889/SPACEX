@@ -1,5 +1,6 @@
 import os
 import pickle
+# pyrefly: ignore [missing-import]
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -82,7 +83,10 @@ def train_and_evaluate_model(model_name, model, param_grid, X_train, y_train, X_
             mlflow.log_artifacts(os.path.join(REPORTS_DIR, model_name))
             
             # Log model
-            mlflow.sklearn.log_model(best_model, f"model_{model_name}")
+            if model_name == 'XGBoost':
+                mlflow.xgboost.log_model(best_model, f"model_{model_name}")
+            else:
+                mlflow.sklearn.log_model(best_model, f"model_{model_name}")
             
             print(f"MLflow logged successfully for {model_name}!")
             print(f"Best Params: {grid_search.best_params_}")
