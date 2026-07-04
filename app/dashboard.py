@@ -96,7 +96,7 @@ if df is not None:
         with col_left:
             st.write("#### Success Rate by Launch Site")
             fig, ax = plt.subplots(figsize=(6, 4))
-            sns.barplot(data=df, x='Launch site', y='Class', errorbar=None, palette='Blues_r', ax=ax)
+            sns.barplot(data=df, x='Launch site', y='Class', errorbar=None, hue='Launch site', legend=False, palette='Blues_r', ax=ax)
             ax.set_ylabel('Success Rate')
             ax.set_ylim(0, 1.05)
             st.pyplot(fig)
@@ -104,7 +104,7 @@ if df is not None:
         with col_right:
             st.write("#### Success Rate by Orbit Type")
             fig, ax = plt.subplots(figsize=(6, 4))
-            sns.barplot(data=df, x='Orbit', y='Class', errorbar=None, palette='viridis', ax=ax)
+            sns.barplot(data=df, x='Orbit', y='Class', errorbar=None, hue='Orbit', legend=False, palette='viridis', ax=ax)
             ax.set_ylabel('Success Rate')
             ax.set_ylim(0, 1.05)
             plt.xticks(rotation=45)

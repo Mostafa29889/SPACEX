@@ -154,8 +154,8 @@ def create_artifacts(model_name, model, X_test, y_test, y_pred, y_prob):
         indices = np.argsort(importances)[::-1]
         plt.figure(figsize=(10, 6))
         plt.title(f"Feature Importance - {model_name}")
-        # Map indices to actual feature names (if we pass them in, but standard is index labels)
-        sns.barplot(x=importances[indices][:10], y=[f"F{i}" for i in indices[:10]], palette="viridis")
+        feature_labels = [f"F{i}" for i in indices[:10]]
+        sns.barplot(x=importances[indices][:10], y=feature_labels, hue=feature_labels, legend=False, palette="viridis")
         plt.tight_layout()
         plt.savefig(os.path.join(model_report_dir, 'feature_importance.png'))
         plt.close()
