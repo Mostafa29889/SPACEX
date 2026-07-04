@@ -128,7 +128,9 @@ if df is not None:
             
             col1, col2 = st.columns(2)
             with col1:
-                flight_num = st.number_input("Flight Number (Experience Index)", min_value=1, max_value=200, value=int(df['Flight No.'].max() + 1))
+                max_flight = df['Flight No.'].dropna().max()
+                default_flight_val = int(max_flight + 1) if not pd.isna(max_flight) else 100
+                flight_num = st.number_input("Flight Number (Experience Index)", min_value=1, max_value=200, value=default_flight_val)
                 payload_mass = st.number_input("Payload Mass (kg)", min_value=0, max_value=20000, value=5000)
                 orbit = st.selectbox("Destination Orbit", unique_orbits, index=unique_orbits.index('GTO') if 'GTO' in unique_orbits else 0)
             with col2:
