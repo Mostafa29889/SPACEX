@@ -1,33 +1,33 @@
 import os
-import requests
+import shutil
+import kagglehub
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
-
-DATASETS = {
-    'dataset_part_1.csv': 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/dataset_part_1.csv',
-    'dataset_part_2.csv': 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/dataset_part_2.csv'
-}
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
 
 def download_data():
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
         print(f"Created data directory at {DATA_DIR}")
 
-    for filename, url in DATASETS.items():
-        filepath = os.path.join(DATA_DIR, filename)
-        if os.path.exists(filepath):
-            print(f"{filename} already exists at {filepath}. Skipping download.")
-            continue
-        
-        print(f"Downloading {filename} from {url}...")
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            with open(filepath, 'wb') as f:
-                f.write(response.content)
-            print(f"Successfully saved to {filepath}")
-        except Exception as e:
-            print(f"Failed to download {filename}: {e}")
+    print("Downloading dataset from Kaggle via kagglehub...")
+    # Download latest version of the dataset
+    downloaded_path = kagglehub.dataset_download("xjoannax88/spacex-falcon-9-launches")
+    print(f"Path to dataset files in cache: {downloaded_path}")
+    
+    # Copy all files from downloaded_path to DATA_DIR
+    files = os.listdir(downloaded_path)
+    for filename in files:
+        src_file = os.path.join(downloaded_path, filename)
+        dest_file = os.path.join(DATA_DIR, filename)
+        if os.path.isdir(src_file):
+            if os.path.exists(dest_file):
+                shutil.rmtree(dest_file)
+            shutil.copytree(src_file, dest_file)
+            print(f"Copied folder {filename} to {DATA_DIR}")
+        else:
+            shutil.copy2(src_file, dest_file)
+            print(f"Copied file {filename} to {DATA_DIR}")
 
 if __name__ == '__main__':
     download_data()
